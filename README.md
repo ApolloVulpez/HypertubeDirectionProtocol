@@ -27,7 +27,7 @@ When you're coming up to a hyper tube junction, or hypertube branch. Just hold t
 ## Demonstration
 
 
-![enter image description here](https://i.imgur.com/xHUQz3R.gif)
+https://i.imgur.com/xHUQz3R.gif
 
 
 ## Future Plans
