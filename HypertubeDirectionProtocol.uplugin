@@ -3,7 +3,7 @@
 	"Version": 1,
 	"VersionName": "1.0.0",
 	"FriendlyName": "HypertubeDirectionProtocol",
-	"Description": "thing",
+	"Description": "A mod to allow using A and D to change Hypertube Junction directions instead of pressing E",
 	"Category": "Modding",
 	"CreatedBy": "ApolloVulpez",
 	"CreatedByURL": "",
