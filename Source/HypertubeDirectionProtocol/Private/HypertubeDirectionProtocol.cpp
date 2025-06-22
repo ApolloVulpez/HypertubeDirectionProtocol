@@ -46,12 +46,10 @@ public:
 				int32 Index = INDEX_NONE;
 				if (bDownA && !bDownD)
 				{
-					UE_LOG(LogTemp, Log, TEXT("[HypertubeDirectionProtocol] A pressed - Selecting Left Junction Output"));
 					Index = 0;
 				}
 				else if (bDownD && !bDownA)
 				{
-					UE_LOG(LogTemp, Log, TEXT("[HypertubeDirectionProtocol] D pressed - Selecting Right Junction Output"));
 					Index = Outputs.Num() - 1;
 				}
 
@@ -74,27 +72,6 @@ void FHypertubeDirectionProtocolModule::StartupModule()
 	UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] StartupModule running"));
 
 	HypertubeDirectionTicker = MakeShared<FHypertubeDirectionTickObject>();
-
-	SUBSCRIBE_METHOD(AFGCharacterPlayer::Server_CycleHyperJunctionOutputConnection,
-		[](TCallScope<void(*)(AFGCharacterPlayer*, UFGPipeConnectionComponentBase*)>& Scope,
-			AFGCharacterPlayer* self,
-			UFGPipeConnectionComponentBase* param)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] Hooked Server_CycleHyperJunctionOutputConnection"));
-			UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] Allowing Server_CycleHyperJunctionOutputConnection to run"));
-			Scope(self, param);
-		});
-
-	SUBSCRIBE_METHOD(AFGCharacterPlayer::Server_UpdateHyperJunctionOutputConnection,
-		[](TCallScope<void(*)(AFGCharacterPlayer*, UFGPipeConnectionComponentBase*, UFGPipeConnectionComponentBase*)>& Scope,
-			AFGCharacterPlayer* self,
-			UFGPipeConnectionComponentBase* entered,
-			UFGPipeConnectionComponentBase* output)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] Hooked Server_UpdateHyperJunctionOutputConnection"));
-			UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] Allowing Server_UpdateHyperJunctionOutputConnection to run"));
-			Scope(self, entered, output);
-		});
 }
 
 #undef LOCTEXT_NAMESPACE
