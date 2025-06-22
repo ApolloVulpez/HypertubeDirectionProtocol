@@ -27,7 +27,7 @@ When you're coming up to a hyper tube junction, or hypertube branch. Just hold t
 ## Demonstration
 
 
-![enter image description here](https://i.imgur.com/CboRkWi.gif)
+[See mod page](https://ficsit.app/mod/HypertubeDirectionProtocol)
 
 ## Future Plans
 Remove the old Cycle Travel Direction dialogue and add my own that states the keys
