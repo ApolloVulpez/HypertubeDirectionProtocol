@@ -29,6 +29,7 @@ When you're coming up to a hyper tube junction, or hypertube branch. Just hold t
 
 ![enter image description here](https://i.imgur.com/xHUQz3R.gif)
 
+
 ## Future Plans
 Remove the old Cycle Travel Direction dialogue and add my own that states the keys
 
