@@ -2,9 +2,9 @@ using UnrealBuildTool;
 using System.IO;
 using System;
 
-public class HypertubeDirectionalProtocol : ModuleRules
+public class HypertubeDirectionProtocol : ModuleRules
 {
-	public HypertubeDirectionalProtocol(ReadOnlyTargetRules Target) : base(Target)
+	public HypertubeDirectionProtocol(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		CppStandard = CppStandardVersion.Cpp20;
@@ -41,7 +41,8 @@ public class HypertubeDirectionalProtocol : ModuleRules
 			//"TemplateSequence",
 			"NetCore",
 			"GameplayTags",
-			"Json", "JsonUtilities"
+			"Json", "JsonUtilities",
+			"SML",
 		});
 
 		// FactoryGame plugins

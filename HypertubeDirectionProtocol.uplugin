@@ -1,10 +1,10 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0",
-	"FriendlyName": "HypertubeDirectionalProtocol",
-	"Description": "A mod to allow changing Junction direction based on Keybind inputs",
-	"Category": "Other",
+	"VersionName": "1.0.0",
+	"FriendlyName": "HypertubeDirectionProtocol",
+	"Description": "thing",
+	"Category": "Modding",
 	"CreatedBy": "ApolloVulpez",
 	"CreatedByURL": "",
 	"DocsURL": "",
@@ -16,9 +16,18 @@
 	"Installed": false,
 	"Modules": [
 		{
-			"Name": "HypertubeDirectionalProtocol",
+			"Name": "HypertubeDirectionProtocol",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		}
-	]
+	],
+	"Plugins": [
+		{
+			"Name": "SML",
+			"Enabled": true,
+			"SemVersion": "^3.11.1"
+		}
+	],
+	"SemVersion": "1.0.0",
+	"GameVersion": ">=416835"
 }
