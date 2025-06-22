@@ -16,10 +16,14 @@ This mod solves that!
 ## Basic Idea
 
 When you're coming up to a hyper tube junction, or hypertube branch. Just hold the direction you want to travel before you reach the junction/branch. You'll then travel that direction without issues! Simple!
+
 ## Functionality
-Any hypertube junction in all directions
-Any hypertube branches
-Works on Hyperjunctions place on walls and ceilings
+ - Multiplayer and Dedicated Server compatible!
+ - Any hypertube junction in all directions
+ - Any hypertube branches
+ - Works on Hyperjunctions placed on walls and ceilings
+
+
 ## Demonstration
 
 
@@ -27,3 +31,6 @@ Works on Hyperjunctions place on walls and ceilings
 
 ## Future Plans
 Remove the old Cycle Travel Direction dialogue and add my own that states the keys
+
+### Like the mod?
+Consider supporting me on [Patreon](patreon.com/ApolloVulpez) :3
