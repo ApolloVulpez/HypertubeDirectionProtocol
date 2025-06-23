@@ -30,5 +30,5 @@ When you're coming up to a hyper tube junction, or hypertube branch. Just hold t
 [See mod page](https://ficsit.app/mod/HypertubeDirectionProtocol)
 
 
-### Like the mod?
+## Like the mod?
 Consider supporting me on [Patreon](patreon.com/ApolloVulpez) :3
