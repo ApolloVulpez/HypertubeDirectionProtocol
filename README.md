@@ -1,5 +1,5 @@
 # HypertubeDirectionProtocol
-![enter image description here](https://i.imgur.com/8uZdkzS.png)
+![enter image description here](https://media.discordapp.net/attachments/1202203994660012073/1388839713103806535/256.png?ex=68627146&is=68611fc6&hm=776ad4515257cdc057b25429d8103dd3343a79ef34fcefbc8f31cc34896625ce&=&format=webp&quality=lossless&width=276&height=276)
 
 
 # Introduction
