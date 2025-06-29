@@ -98,7 +98,7 @@ public:
 									UTextBlock* TextBlock = Cast<UTextBlock>(Child);
 									if (IsValid(TextBlock))
 									{
-										TextBlock->SetText(FText::FromString("A D"));
+										TextBlock->SetText(FText::FromString("A/D"));
 									}
 								}
 							}
