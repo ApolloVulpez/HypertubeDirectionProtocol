@@ -31,7 +31,7 @@ When you're coming up to a hyper tube junction, or hypertube branch. Just hold t
 
 
 ## Like the mod?
-Consider supporting me on [Patreon](patreon.com/ApolloVulpez) :3
+Consider supporting me on [Patreon](https://patreon.com/ApolloVulpez) :3
 
 ## Dependecies
 SML is required to run this mod: 
