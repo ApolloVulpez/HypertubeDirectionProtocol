@@ -50,12 +50,18 @@ public:
 				bool bDownA = PC->IsInputKeyDown(EKeys::A);
 				bool bDownD = PC->IsInputKeyDown(EKeys::D);
 
+				bool bLeftStickLeft = PC->IsInputKeyDown(EKeys::Gamepad_LeftStick_Left);
+				bool bLeftStickRight = PC->IsInputKeyDown(EKeys::Gamepad_LeftStick_Right);
+
+				bool bLeft = (bDownA || bLeftStickLeft);
+				bool bRight = (bDownD || bLeftStickRight);
+
 				int32 Index = INDEX_NONE;
-				if (bDownA && !bDownD)
+				if (bLeft && !bRight)
 				{
 					Index = 0;
 				}
-				else if (bDownD && !bDownA)
+				else if (bRight && !bLeft)
 				{
 					Index = Outputs.Num() - 1;
 				}
