@@ -14,6 +14,7 @@
 #include "WidgetBlueprintLibrary.h"
 #include "Components/Widget.h"
 #include "Components/TextBlock.h"
+#include "Components/Image.h"
 #include "Blueprint/WidgetTree.h"
 
 #define LOCTEXT_NAMESPACE "FHypertubeDirectionProtocolModule"
@@ -50,8 +51,10 @@ public:
 				bool bDownA = PC->IsInputKeyDown(EKeys::A);
 				bool bDownD = PC->IsInputKeyDown(EKeys::D);
 
-				bool bLeftStickLeft = PC->IsInputKeyDown(EKeys::Gamepad_LeftStick_Left);
-				bool bLeftStickRight = PC->IsInputKeyDown(EKeys::Gamepad_LeftStick_Right);
+				float LeftStickX = PC->GetInputAnalogKeyState(EKeys::Gamepad_LeftX);
+
+				bool bLeftStickLeft = LeftStickX < -0.5f;
+				bool bLeftStickRight = LeftStickX > 0.5f;
 
 				bool bLeft = (bDownA || bLeftStickLeft);
 				bool bRight = (bDownD || bLeftStickRight);
@@ -71,41 +74,45 @@ public:
 					Player->Server_UpdateHyperJunctionOutputConnection(Pending.mConnectionEnteredThrough, Outputs[Index].Connection);
 				}
 			}
-
 			APlayerController* PC = Cast<APlayerController>(Player->GetController());
 			if (PC)
 			{
 				TArray<UUserWidget*> Widgets;
 				UWidgetBlueprintLibrary::GetAllWidgetsOfClass(Player->GetWorld(), Widgets, UUserWidget::StaticClass(), false);
-
 				for (UUserWidget* Widget : Widgets)
 				{
 					if (!IsValid(Widget)) continue;
 					FString Name = Widget->GetName();
-
 					if (Name.Contains("Widget_Hint"))
 					{
 						if (Widget->WidgetTree)
 						{
 							TArray<UWidget*> Children;
 							Widget->WidgetTree->GetAllWidgets(Children);
+
 							for (UWidget* Child : Children)
 							{
 								if (Child->GetName().Contains("mHintDescription"))
 								{
 									UTextBlock* TextBlock = Cast<UTextBlock>(Child);
-									if (IsValid(TextBlock) && TextBlock->GetText().ToString().Contains("Cycle Travel Direction"))
+									if (IsValid(TextBlock))
 									{
-										TextBlock->SetText(FText::FromString("Pick Left/Right Direction"));
+										FString CurrentText = TextBlock->GetText().ToString();
+										if (CurrentText.Contains("Cycle Travel Direction"))
+										{
+											TextBlock->SetText(FText::FromString("Pick Left/Right Direction"));
+										}
 									}
 								}
 								else if (Child->GetName().Contains("mHintKey"))
 								{
 									UTextBlock* TextBlock = Cast<UTextBlock>(Child);
+									UImage* ImageWidget = Cast<UImage>(Child);
 									if (IsValid(TextBlock))
 									{
 										TextBlock->SetText(FText::FromString("A/D"));
 									}
+
 								}
 							}
 						}
