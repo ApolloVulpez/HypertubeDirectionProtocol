@@ -1,4 +1,5 @@
 #include "HypertubeDirectionProtocol.h"
+#include <string>
 #include "Modules/ModuleManager.h"
 #include "Logging/LogMacros.h"
 #include "FGPipeConnectionComponent.h"
@@ -16,18 +17,32 @@
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
 #include "Blueprint/WidgetTree.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputMappingContext.h"
 
-#define LOCTEXT_NAMESPACE "FHypertubeDirectionProtocolModule"
+#define LOCTEXT_NAMESPACE "FHDPModule"
 
-class FHypertubeDirectionTickObject : public FTickableGameObject
+
+
+
+
+
+class FHDPTickObj : public FTickableGameObject
 {
+
 public:
-	FHypertubeDirectionTickObject()
+	FHDPTickObj()
 		: FrameCounter(0)
+
 	{}
+	FName ChooseLeftKeyCurrent;
+	FName ChooseRightKeyCurrent;
 
 	virtual void Tick(float DeltaTime) override
 	{
+
+		
 		constexpr int32 FramesToSkip = 5;
 		if (++FrameCounter % FramesToSkip != 0)
 			return;
@@ -45,11 +60,23 @@ public:
 
 			if (Outputs.Num() > 1 && Pending.mConnectionEnteredThrough)
 			{
-				APlayerController* PC = Cast<APlayerController>(Player->GetController());
-				if (!PC) continue;
 
-				bool bDownA = PC->IsInputKeyDown(EKeys::A);
-				bool bDownD = PC->IsInputKeyDown(EKeys::D);
+
+				APlayerController* PC = Cast<APlayerController>(Player->GetController());
+
+				FKey ChooseLeftKey;
+				FKey ChooseRightKey;
+				TArray<FKey> ShiftKeys;
+
+				UFGInputLibrary::GetCurrentMappingForAction(PC, "HDP.ChooseLeft", ChooseLeftKey, ShiftKeys);
+				UFGInputLibrary::GetCurrentMappingForAction(PC, "HDP.ChooseRight", ChooseRightKey, ShiftKeys);
+
+				ChooseLeftKeyCurrent = ChooseLeftKey.GetFName();
+				ChooseRightKeyCurrent = ChooseRightKey.GetFName();
+
+				if (!PC) continue;
+				bool bDownA = PC->IsInputKeyDown(ChooseLeftKey);
+				bool bDownD = PC->IsInputKeyDown(ChooseRightKey);
 
 				float LeftStickX = PC->GetInputAnalogKeyState(EKeys::Gamepad_LeftX);
 
@@ -110,9 +137,8 @@ public:
 									UImage* ImageWidget = Cast<UImage>(Child);
 									if (IsValid(TextBlock))
 									{
-										TextBlock->SetText(FText::FromString("A/D"));
+										TextBlock->SetText(FText::FromString(ChooseLeftKeyCurrent.ToString() + "/" + ChooseRightKeyCurrent.ToString()));
 									}
-
 								}
 							}
 						}
@@ -122,7 +148,7 @@ public:
 		}
 	}
 
-	virtual TStatId GetStatId() const override { RETURN_QUICK_DECLARE_CYCLE_STAT(FHypertubeDirectionTickObject, STATGROUP_Tickables); }
+	virtual TStatId GetStatId() const override { RETURN_QUICK_DECLARE_CYCLE_STAT(FHDPTickObj, STATGROUP_Tickables); }
 	virtual bool IsTickable() const override { return true; }
 
 private:
@@ -130,18 +156,16 @@ private:
 };
 
 
+static TSharedPtr<FHDPTickObj> HyperTicker;
 
-
-static TSharedPtr<FHypertubeDirectionTickObject> HypertubeDirectionTicker;
-
-void FHypertubeDirectionProtocolModule::StartupModule()
+void FHDPModule::StartupModule()
 {
 	UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] Hooking Active"));
 
-	HypertubeDirectionTicker = MakeShared<FHypertubeDirectionTickObject>();
-
+	HyperTicker = MakeShared<FHDPTickObj>();
 }
+
 
 #undef LOCTEXT_NAMESPACE
 
-IMPLEMENT_MODULE(FHypertubeDirectionProtocolModule, HypertubeDirectionProtocol);
+IMPLEMENT_MODULE(FHDPModule, HypertubeDirectionProtocol);
