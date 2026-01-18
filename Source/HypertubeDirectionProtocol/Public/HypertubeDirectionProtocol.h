@@ -1,14 +1,15 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
 #pragma once
 
+#include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
-#include "FGInputLibrary.h"
 
-// Forward declaration to avoid include bloat
-class UFGCharacterMovementComponent;
-
-class FHDPModule : public IModuleInterface
+class FHypertubeDirectionProtocolModule : public IModuleInterface
 {
 public:
-	virtual void StartupModule() override;
-};
 
+	/** IModuleInterface implementation */
+	virtual void StartupModule() override;
+	virtual void ShutdownModule() override;
+};

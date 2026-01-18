@@ -1,171 +1,24 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
 #include "HypertubeDirectionProtocol.h"
-#include <string>
-#include "Modules/ModuleManager.h"
-#include "Logging/LogMacros.h"
-#include "FGPipeConnectionComponent.h"
-#include "FGCharacterMovementComponent.h"
-#include "NativeHookManager.h"
-#include "GameFramework/PlayerController.h"
-#include "FGCharacterPlayer.h"
-#include "Engine/World.h"
-#include "GameFramework/PlayerInput.h"
-#include "InputCoreTypes.h"
-#include "Tickable.h"
-#include "FGHUD.h"
-#include "WidgetBlueprintLibrary.h"
-#include "Components/Widget.h"
-#include "Components/TextBlock.h"
-#include "Components/Image.h"
-#include "Blueprint/WidgetTree.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
-#include "InputMappingContext.h"
-
-#define LOCTEXT_NAMESPACE "FHDPModule"
+#include "AHDPTickObj.h"
 
 
-
-
-
-
-class FHDPTickObj : public FTickableGameObject
-{
-
-public:
-	FHDPTickObj()
-		: FrameCounter(0)
-
-	{}
-	FName ChooseLeftKeyCurrent;
-	FName ChooseRightKeyCurrent;
-
-	virtual void Tick(float DeltaTime) override
-	{
-
-		
-		constexpr int32 FramesToSkip = 5;
-		if (++FrameCounter % FramesToSkip != 0)
-			return;
-
-		for (TObjectIterator<AFGCharacterPlayer> It; It; ++It)
-		{
-			AFGCharacterPlayer* Player = *It;
-			if (!IsValid(Player)) continue;
-
-			UFGCharacterMovementComponent* MoveComp = Cast<UFGCharacterMovementComponent>(Player->GetMovementComponent());
-			if (!MoveComp || !MoveComp->IsInHyperPipe()) continue;
-
-			const FFGPendingHyperJunctionInfo& Pending = MoveComp->GetPendingHyperJunction();
-			const TArray<FFGHypertubeJunctionOutputConnectionInfo>& Outputs = Pending.mAvailableOutputConnections;
-
-			if (Outputs.Num() > 1 && Pending.mConnectionEnteredThrough)
-			{
-
-
-				APlayerController* PC = Cast<APlayerController>(Player->GetController());
-
-				FKey ChooseLeftKey;
-				FKey ChooseRightKey;
-				TArray<FKey> ShiftKeys;
-
-				UFGInputLibrary::GetCurrentMappingForAction(PC, "HDP.ChooseLeft", ChooseLeftKey, ShiftKeys);
-				UFGInputLibrary::GetCurrentMappingForAction(PC, "HDP.ChooseRight", ChooseRightKey, ShiftKeys);
-
-				ChooseLeftKeyCurrent = ChooseLeftKey.GetFName();
-				ChooseRightKeyCurrent = ChooseRightKey.GetFName();
-
-				if (!PC) continue;
-				bool bDownA = PC->IsInputKeyDown(ChooseLeftKey);
-				bool bDownD = PC->IsInputKeyDown(ChooseRightKey);
-
-				float LeftStickX = PC->GetInputAnalogKeyState(EKeys::Gamepad_LeftX);
-
-				bool bLeftStickLeft = LeftStickX < -0.5f;
-				bool bLeftStickRight = LeftStickX > 0.5f;
-
-				bool bLeft = (bDownA || bLeftStickLeft);
-				bool bRight = (bDownD || bLeftStickRight);
-
-				int32 Index = INDEX_NONE;
-				if (bLeft && !bRight)
-				{
-					Index = 0;
-				}
-				else if (bRight && !bLeft)
-				{
-					Index = Outputs.Num() - 1;
-				}
-
-				if (Outputs.IsValidIndex(Index))
-				{
-					Player->Server_UpdateHyperJunctionOutputConnection(Pending.mConnectionEnteredThrough, Outputs[Index].Connection);
-				}
-			}
-			APlayerController* PC = Cast<APlayerController>(Player->GetController());
-			if (PC)
-			{
-				TArray<UUserWidget*> Widgets;
-				UWidgetBlueprintLibrary::GetAllWidgetsOfClass(Player->GetWorld(), Widgets, UUserWidget::StaticClass(), false);
-				for (UUserWidget* Widget : Widgets)
-				{
-					if (!IsValid(Widget)) continue;
-					FString Name = Widget->GetName();
-					if (Name.Contains("Widget_Hint"))
-					{
-						if (Widget->WidgetTree)
-						{
-							TArray<UWidget*> Children;
-							Widget->WidgetTree->GetAllWidgets(Children);
-
-							for (UWidget* Child : Children)
-							{
-								if (Child->GetName().Contains("mHintDescription"))
-								{
-									UTextBlock* TextBlock = Cast<UTextBlock>(Child);
-									if (IsValid(TextBlock))
-									{
-										FString CurrentText = TextBlock->GetText().ToString();
-										if (CurrentText.Contains("Cycle Travel Direction"))
-										{
-											TextBlock->SetText(FText::FromString("Pick Left/Right Direction"));
-										}
-									}
-								}
-								else if (Child->GetName().Contains("mHintKey"))
-								{
-									UTextBlock* TextBlock = Cast<UTextBlock>(Child);
-									UImage* ImageWidget = Cast<UImage>(Child);
-									if (IsValid(TextBlock))
-									{
-										TextBlock->SetText(FText::FromString(ChooseLeftKeyCurrent.ToString() + "/" + ChooseRightKeyCurrent.ToString()));
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	virtual TStatId GetStatId() const override { RETURN_QUICK_DECLARE_CYCLE_STAT(FHDPTickObj, STATGROUP_Tickables); }
-	virtual bool IsTickable() const override { return true; }
-
-private:
-	int32 FrameCounter;
-};
-
+#define LOCTEXT_NAMESPACE "FHypertubeDirectionProtocolModule"
 
 static TSharedPtr<FHDPTickObj> HyperTicker;
 
-void FHDPModule::StartupModule()
+void FHypertubeDirectionProtocolModule::StartupModule()
 {
 	UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] Hooking Active"));
-
 	HyperTicker = MakeShared<FHDPTickObj>();
 }
 
+void FHypertubeDirectionProtocolModule::ShutdownModule()
+{
+	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
+	// we call this function before unloading the module.
+}
 
 #undef LOCTEXT_NAMESPACE
-
-IMPLEMENT_MODULE(FHDPModule, HypertubeDirectionProtocol);
+	
+IMPLEMENT_MODULE(FHypertubeDirectionProtocolModule, HypertubeDirectionProtocol)

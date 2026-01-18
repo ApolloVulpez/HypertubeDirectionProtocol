@@ -41,8 +41,7 @@ public class HypertubeDirectionProtocol : ModuleRules
 			//"TemplateSequence",
 			"NetCore",
 			"GameplayTags",
-			"Json", "JsonUtilities",
-			"SML",
+			"Json", "JsonUtilities"
 		});
 
 		// FactoryGame plugins

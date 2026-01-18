@@ -1,12 +1,12 @@
 {
 	"FileVersion": 3,
-	"Version": 2,
-	"VersionName": "2.0.0",
-	"FriendlyName": "HypertubeDirectionProtocol",
-	"Description": "A mod to allow using A and D to change Hypertube Junction directions instead of pressing E",
+	"Version": 3,
+	"VersionName": "3.0.0",
+	"FriendlyName": "Hypertube Direction Protocol",
+	"Description": "A low resource mod that does one simple thing. It allows the player to use A and D to decide which direction they travel down a Hypertube Junction/Branch",
 	"Category": "Modding",
 	"CreatedBy": "ApolloVulpez",
-	"CreatedByURL": "",
+	"CreatedByURL": "https://ficsit.app/user/51oYwJaCajLF2s",
 	"DocsURL": "",
 	"MarketplaceURL": "",
 	"SupportURL": "",
@@ -28,6 +28,6 @@
 			"SemVersion": "^3.11.1"
 		}
 	],
-	"SemVersion": "2.0.0",
+	"SemVersion": "3.0.0",
 	"GameVersion": ">=416835"
 }
