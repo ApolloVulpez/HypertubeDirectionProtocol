@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 3,
-	"VersionName": "3.0.0",
+	"VersionName": "3.0.1",
 	"FriendlyName": "Hypertube Direction Protocol",
 	"Description": "A low resource mod that does one simple thing. It allows the player to use A and D to decide which direction they travel down a Hypertube Junction/Branch",
 	"Category": "Modding",
@@ -25,9 +25,9 @@
 		{
 			"Name": "SML",
 			"Enabled": true,
-			"SemVersion": "^3.11.1"
+			"SemVersion": "^3.11.3"
 		}
 	],
-	"SemVersion": "3.0.0",
+	"SemVersion": "3.0.1",
 	"GameVersion": ">=416835"
 }

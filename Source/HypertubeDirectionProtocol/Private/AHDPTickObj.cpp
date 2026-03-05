@@ -62,8 +62,8 @@ void FHDPTickObj::Tick(float DeltaTime)
 				}
 			}
 			APlayerController* PC = Cast<APlayerController>(Player->GetController());
-
-
+			if (!IsValid(PC)) continue;
+			if (!IsValid(PC->PlayerInput)) continue;
 
 			FKey ChooseLeftKey;
 			FKey ChooseRightKey;
