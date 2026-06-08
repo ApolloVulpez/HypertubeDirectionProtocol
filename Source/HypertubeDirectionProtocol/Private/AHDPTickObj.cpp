@@ -1,27 +1,28 @@
 #include "AHDPTickObj.h"
 
+
 bool AHDPTickObj::TurnLeftValue = false;
 bool AHDPTickObj::TurnRightValue = false;
 
 void AHDPTickObj::TurnLeftStart()
 {
 	TurnLeftValue = true;
-	UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] TurnLeftStart called | Left=%d"), TurnLeftValue);
+	/*UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] TurnLeftStart called | Left=%d"), TurnLeftValue);*/
 }
 void AHDPTickObj::TurnRightStart()
 {
 	TurnRightValue = true;
-	UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] TurnRightStart called | Right=%d"), TurnRightValue);
+	/*UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] TurnRightStart called | Right=%d"), TurnRightValue);*/
 }
 void AHDPTickObj::TurnLeftEnd()
 {
 	TurnLeftValue = false;
-	UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] TurnLeftEnd called | Left=%d"), TurnLeftValue);
+	/*UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] TurnLeftEnd called | Left=%d"), TurnLeftValue);*/
 }
 void AHDPTickObj::TurnRightEnd()
 {
 	TurnRightValue = false;
-	UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] TurnRightEnd called | Right=%d"), TurnRightValue);
+	/*UE_LOG(LogTemp, Warning, TEXT("[HypertubeDirectionProtocol] TurnRightEnd called | Right=%d"), TurnRightValue);*/
 }
 
 
@@ -74,6 +75,10 @@ void FHDPTickObj::Tick(float DeltaTime)
 
 			ChooseLeftKeyCurrent = ChooseLeftKey.GetFName();
 			ChooseRightKeyCurrent = ChooseRightKey.GetFName();
+
+			bool prevLeft = hdpLeft;
+			bool prevRight = hdpRight;
+
 			if (!hdpIsFlipped)
 			{
 
@@ -87,11 +92,11 @@ void FHDPTickObj::Tick(float DeltaTime)
 			}
 
 			int32 Index = INDEX_NONE;
-			if (hdpLeft && !hdpRight)
+			if (hdpLeft && !prevLeft && !hdpRight)
 			{
 				Index = 0;
 			}
-			else if (hdpRight && !hdpLeft)
+			else if (hdpRight && !prevRight && !hdpLeft)
 			{
 				Index = Outputs.Num() - 1;
 			}
